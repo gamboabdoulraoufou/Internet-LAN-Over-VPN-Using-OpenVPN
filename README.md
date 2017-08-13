@@ -403,6 +403,7 @@ ca /etc/openvpn-config-files/ca.crt
 cert /etc/openvpn-config-files/server-client.crt
 key /etc/openvpn-config-files/server-client.key
 tls-auth /etc/openvpn-config-files/ta.key 1
+cipher AES-256-CBC
 comp-lzo
 verb 3
 
@@ -460,6 +461,7 @@ ca /Users/agambo/OVH/vpn_config/client/ca.crt
 cert /Users/agambo/OVH/vpn_config/client/mac-client.crt
 key /Users/agambo/OVH/vpn_config/client/mac-client.key
 tls-auth /Users/agambo/OVH/vpn_config/client/ta.key 1
+cipher AES-256-CBC
 comp-lzo
 verb 3
 
