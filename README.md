@@ -149,6 +149,10 @@ status /var/log/openvpn/openvpn-status.log
 log         /var/log/openvpn/openvpn.log
 log-append  /var/log/openvpn/openvpn.log
 
+# Notify the client that when the server restarts so it
+# can automatically reconnect.
+explicit-exit-notify 0
+
 ########### END CHANGE INTO server.conf file ##########
 
 # save and quit
@@ -296,6 +300,11 @@ systemctl status openvpn@server
 
 ```
 
+After starting VPN server, you sould se something like this
+
+![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/server-ip.png)
+
+
 > Configuring a Client 1 `Server (Linix server accessible only via VPN tunnel)`
 
 ```sh
@@ -368,10 +377,10 @@ user nobody
 group nobody
 persist-key
 persist-tun
-ca /etc/openvpn-config/ca.crt
-cert /etc/openvpn-config/server-client.crt
-key /etc/openvpn-config/server-client.key
-tls-auth /etc/openvpn-config/ta.key
+ca /etc/openvpn-config-files/ca.crt
+cert /etc/openvpn-config-files/server-client.crt
+key /etc/openvpn-config-files/server-client.key
+tls-auth /etc/openvpn-config-files/ta.key 1
 comp-lzo
 verb 3
 
@@ -397,9 +406,10 @@ ifconfig
 
 ```
 
+
 You should see something like this
 
-![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/vpn_server-client-ip.png)
+![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/client-ip.png)
 
 
 > Configure openvpn for Mac or windows client
@@ -426,7 +436,7 @@ persist-tun
 ca /Users/agambo/OVH/vpn_config/client/ca.crt
 cert /Users/agambo/OVH/vpn_config/client/mac-client.crt
 key /Users/agambo/OVH/vpn_config/client/mac-client.key
-tls-auth /Users/agambo/OVH/vpn_config/client/ta.key
+tls-auth /Users/agambo/OVH/vpn_config/client/ta.key 1
 comp-lzo
 verb 3
 
@@ -444,9 +454,15 @@ Support/Tunnelblick/Configurations directory. Or, you can double-click on your .
 On Windows, you will need the official OpenVPN Community Edition binaries which come with a GUI. Then, place your .ovpn configuration file into the proper directory, C:\Program Files\OpenVPN\config, and click Connect in the GUI. OpenVPN GUI on Windows must be executed with administrative privileges
 
 
-> Reach our web aplication try vpn tunnel 
-We are using local IP adress of our Web server from windows or mac client
+> Reach web app from private IP
+You can use private IP address to reach web app (web server) from windows or mac client
 
-![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/web-app.png)
+![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/public-web-app.png)
 
+> Reach web app from public IP
+You can use also public IP address to reach web app (web server) from windows or mac client
+
+![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/private-web-app.png)
+
+Enjoy!
 
