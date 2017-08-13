@@ -240,6 +240,23 @@ cp dh2048.pem ca.crt server.crt server.key /etc/openvpn/keys/
 cp /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/openssl.cnf
 ```
 
+
+> Configure authentication - TLS Authentication
+Create an "HMAC firewall" to help block DoS attacks and UDP port flooding
+
+```sh
+# create DH parameters file
+openssl dhparam -out dh2048.pem 2048
+
+# create key
+mkdir -p /etc/openvpn/tls && openvpn --genkey --secret /etc/openvpn/tls/ta.key
+
+# copy key into key folder
+cp /etc/openvpn/tls/ta.key /etc/openvpn/keys/
+
+```
+
+
 > Routing `VPN Server`
 
 ```sh
