@@ -281,10 +281,15 @@ systemctl status openvpn@server
 
 > Configuring a Client 1 `Server (Linix server accessible only via VPN tunnel)`
 
+```sh
+# log as root
+sudo su - root
+```
+
 Copy these files from `VPN Server` to the client server:
 - ca.crt
-- client.crt
-- client.key
+- server-client.crt
+- server-client.key
 
 You can use scp
 
@@ -299,7 +304,7 @@ yum install -y openvpn
 
 ```
 
-> Install http server for test
+> Web application for test `Server (Linix server accessible only via VPN tunnel)`
 
 ```sh
 # install http server
@@ -314,37 +319,77 @@ systemctl status httpd
 firewall-cmd --permanent --add-port=80/tcp
 firewall-cmd --reload
 
+# create web page for test
+mkdir -p /var/www/html/
+echo "Hello world" > /var/www/html/index.html
+
 ```
 
+> Configure openvpn `Server (Linix server accessible only via VPN tunnel)`
+
+```sh
+# create config folder
+mkdir /etc/openvpn-config
+
+# copy certificates files download from server into the folder
+cp ca.crt /etc/openvpn-config/
+cp server-client.crt /etc/openvpn-config/
+cp server-client.key /etc/openvpn-config/
+
+# create openvpn configuration folder
+vi client.opvn
+
+# add the following content
+######### START FILE CONTENT #########
+client
+dev tun
+proto tcp
+remote [VPN_SERVER_IP] 1196
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+comp-lzo
+verb 3
+ca /etc/openvpn-config/ca.crt
+cert /etc/openvpn-config/server-client.crt
+key /etc/openvpn-config/server-client.key
+######### END FILE CONTENT #########
+
+```
+
+> Start OpenVPN `Server (Linix server accessible only via VPN tunnel)`
+
+```sh
+openvpn --config /etc/openvpn-config/client.ovpn
+```
+
+> Check you VPN tunneling `Server (Linix server accessible only via VPN tunnel)`
+
+```sh
+ip addr show
+
+```
+
+You should see something like this
+
+![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/vpn_server-client-ip.png)
 
 
+> MAC client configuration
+
+On Mac OS X, the open source application Tunnelblick provides an interface similar to the OpenVPN GUI on Windows, and comes with OpenVPN and the required TUN/TAP drivers. As with Windows, the only step required is to place your .ovpn configuration file into the ~/Library/Application
+Support/Tunnelblick/Configurations directory. Or, you can double-click on your .ovpn file.
 
 
+> Windows client configuration
+
+On Windows, you will need the official OpenVPN Community Edition binaries which come with a GUI. Then, place your .ovpn configuration file into the proper directory, C:\Program Files\OpenVPN\config, and click Connect in the GUI. OpenVPN GUI on Windows must be executed with administrative privileges
 
 
+> Reach our web aplication try vpn tunnel 
+We are using local IP adress of our Web server from windows or mac client
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/web-app.png)
 
 
