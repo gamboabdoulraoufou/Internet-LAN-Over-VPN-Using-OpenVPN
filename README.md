@@ -155,13 +155,13 @@ log-append  /var/log/openvpn/openvpn.log
 
 ```
 
-> Create openvpn log folder
+> Create openvpn log folder `VPN Server`
 
 ```sh 
 mkdir /var/log/openvpn/
 ```
 
-> Generating Keys and Certificates
+> Generating Keys and Certificates `VPN Server`
 
 ```sh
 # create certificates folder
@@ -209,7 +209,7 @@ source ./vars
 ./clean-all
 ```
 
-> Generate certificates
+> Generate certificates `VPN Server`
 
 ```sh
 # generate certificate authority
@@ -234,13 +234,13 @@ cp dh2048.pem ca.crt server.crt server.key /etc/openvpn/keys/
 
 ```
 
-> Copy openssl.cnf file
+> Copy openssl.cnf file `VPN Server`
 
 ```sh
 cp /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/openssl.cnf
 ```
 
-> Routing
+> Routing `VPN Server`
 
 ```sh
 # mask firefall and start iptables
@@ -265,11 +265,54 @@ systemctl restart network.service
 
 ```
 
-> Starting OpenVPN
+> Starting OpenVPN `VPN Server`
 
 ``` sh
-
+# add it to systemctl
 systemctl -f enable openvpn@server.service
+
+# Start OpenVPN
+systemctl start openvpn@server.service
+
+# check openvpn status
+systemctl status openvpn@server
+
+```
+
+> Configuring a Client 1 `Server (Linix server accessible only via VPN tunnel)`
+
+Copy these files from `VPN Server` to the client server:
+- ca.crt
+- client.crt
+- client.key
+
+You can use scp
+
+> Intall pre-requisites `Server (Linix server accessible only via VPN tunnel)`
+
+```sh
+# install the Extra Packages
+yum install -y epel-release
+
+# install openvpn
+yum install -y openvpn 
+
+```
+
+> Install http server for test
+
+```sh
+# install http server
+yum -y install httpd
+
+# start http service
+systemctl enable httpd
+systemctl start httpd
+systemctl status httpd
+
+# configure firewall
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --reload
 
 ```
 
