@@ -85,6 +85,13 @@ key /etc/openvpn/keys/server.key  # This file should be kept secret
 #   openssl dhparam -out dh2048.pem 2048
 dh /etc/openvpn/keys/dh2048.pem
 
+# Maintain a record of client <-> virtual IP address
+# associations in this file.  If OpenVPN goes down or
+# is restarted, reconnecting clients can be assigned
+# the same virtual IP address from the pool that was
+# previously assigned.
+ifconfig-pool-persist /etc/openvpn/ipp.txt 0
+
 # If enabled, this directive will configure
 # all clients to redirect their default
 # network gateway through the VPN, causing
@@ -158,6 +165,21 @@ explicit-exit-notify 0
 # save and quit
 
 ```
+
+
+> Create client file to fix IP
+
+```sh
+# edit file
+vi /etc/openvpn/ipp.txt
+
+# add client_name (the same to the certificate file) and IP
+server-client,10.8.0.4
+mac-client,10.8.0.8
+
+# save and quit
+```
+
 
 > Create openvpn log folder `VPN Server`
 
