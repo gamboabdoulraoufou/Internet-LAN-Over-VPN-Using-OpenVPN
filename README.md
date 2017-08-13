@@ -467,3 +467,5 @@ You can use also public IP address to reach web app (web server) from windows or
 
 Enjoy!
 
+
+https://15minutesoffame.be/nico/blog2/index.php?article21/configuration-openvpn-ip-statiques-et-redirection-de-ports
