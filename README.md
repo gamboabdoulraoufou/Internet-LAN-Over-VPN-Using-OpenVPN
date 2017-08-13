@@ -346,51 +346,91 @@ echo "Hello world" > /var/www/html/index.html
 
 ```sh
 # create config folder
-mkdir /etc/openvpn-config
+mkdir /etc/openvpn-config-files
 
 # copy certificates files download from server into the folder
-cp ca.crt /etc/openvpn-config/
-cp server-client.crt /etc/openvpn-config/
-cp server-client.key /etc/openvpn-config/
+cp ca.crt /etc/openvpn-config-files/
+cp server-client.crt /etc/openvpn-config-files/
+cp server-client.key /etc/openvpn-config-files/
 
 # create openvpn configuration folder
-vi client.opvn
+vi /etc/openvpn-config-files/client.ovpn
 
 # add the following content
 ######### START FILE CONTENT #########
 client
-dev tun
 proto tcp
-remote [VPN_SERVER_IP] 1196
+dev tun
+remote 147.135.194.105 1196
 resolv-retry infinite
 nobind
+user nobody
+group nobody
 persist-key
 persist-tun
-comp-lzo
-verb 3
 ca /etc/openvpn-config/ca.crt
 cert /etc/openvpn-config/server-client.crt
 key /etc/openvpn-config/server-client.key
+tls-auth /etc/openvpn-config/ta.key
+comp-lzo
+verb 3
+
 ######### END FILE CONTENT #########
 
+# save and quit
+
+# add execution right
+chmod +x /etc/openvpn-config-files/client.ovpn
 ```
 
 > Start OpenVPN `Server (Linix server accessible only via VPN tunnel)`
 
 ```sh
-openvpn --config /etc/openvpn-config/client.ovpn
+openvpn --config /etc/openvpn-config-files/client.ovpn
 ```
 
 > Check you VPN tunneling `Server (Linix server accessible only via VPN tunnel)`
 
 ```sh
-ip addr show
+# check config
+ifconfig
 
 ```
 
 You should see something like this
 
 ![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/vpn_server-client-ip.png)
+
+
+> Configure openvpn for Mac or windows client
+
+Copy these files from `VPN Server` to the client server:
+- ca.crt
+- mac-client.crt
+- mac-client.key
+
+create client.ovpn file with the following content
+
+######### START FILE CONTENT #########
+
+client
+proto tcp
+dev tun
+remote 147.135.194.105 1196
+resolv-retry infinite
+nobind
+user nobody
+group nobody
+persist-key
+persist-tun
+ca /Users/agambo/OVH/vpn_config/client/ca.crt
+cert /Users/agambo/OVH/vpn_config/client/mac-client.crt
+key /Users/agambo/OVH/vpn_config/client/mac-client.key
+tls-auth /Users/agambo/OVH/vpn_config/client/ta.key
+comp-lzo
+verb 3
+
+######### END FILE CONTENT #########
 
 
 > MAC client configuration
