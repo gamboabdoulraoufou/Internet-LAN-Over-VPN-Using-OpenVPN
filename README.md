@@ -412,15 +412,16 @@ You should see something like this
 ![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/client-ip.png)
 
 
-> Configure openvpn for Mac or windows client
+> Configure openvpn for Mac or windows client  
 
-Copy these files from `VPN Server` to the client server:
+Copy these files from `VPN Server` to the client server:  
 - ca.crt
 - mac-client.crt
 - mac-client.key
 
-create client.ovpn file with the following content
+create client.ovpn file with the following content  
 
+```sh
 ######### START FILE CONTENT #########
 
 client
@@ -441,7 +442,7 @@ comp-lzo
 verb 3
 
 ######### END FILE CONTENT #########
-
+```
 
 > MAC client configuration
 
@@ -454,12 +455,12 @@ Support/Tunnelblick/Configurations directory. Or, you can double-click on your .
 On Windows, you will need the official OpenVPN Community Edition binaries which come with a GUI. Then, place your .ovpn configuration file into the proper directory, C:\Program Files\OpenVPN\config, and click Connect in the GUI. OpenVPN GUI on Windows must be executed with administrative privileges
 
 
-> Reach web app from private IP
+> Reach web app from private IP  
 You can use private IP address to reach web app (web server) from windows or mac client
 
 ![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/public-web-app.png)
 
-> Reach web app from public IP
+> Reach web app from public IP  
 You can use also public IP address to reach web app (web server) from windows or mac client
 
 ![MetaStore remote database](https://github.com/gamboabdoulraoufou/Internet-LAN-Over-VPN-Using-OpenVPN/blob/master/img/private-web-app.png)
