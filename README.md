@@ -284,6 +284,7 @@ cp /etc/openvpn/tls/ta.key /etc/openvpn/keys/
 
 
 > Routing `VPN Server`
+https://unix.stackexchange.com/questions/149144/configuring-openvpn-to-use-firewalld-instead-of-iptables-on-centos-7
 
 ```sh
 # mask firefall and start iptables
