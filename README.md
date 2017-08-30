@@ -285,6 +285,7 @@ cp /etc/openvpn/tls/ta.key /etc/openvpn/keys/
 
 > Routing `VPN Server`
 https://unix.stackexchange.com/questions/149144/configuring-openvpn-to-use-firewalld-instead-of-iptables-on-centos-7
+https://community.openvpn.net/openvpn/wiki/BridgingAndRouting
 
 ```sh
 # mask firefall and start iptables
@@ -295,7 +296,19 @@ systemctl start iptables
 iptables --flush
 
 # add a rule to iptables to forward our routing to our OpenVPN subnet, and save this rule
-iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+#iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+#iptables-save > /etc/sysconfig/iptables
+
+# Allow traffic initiated from VPN to access LAN
+iptables -I FORWARD -i tun0 -o eth1 \
+     -s 10.8.0.0/24 -d 192.168.0.0/24 \
+     -m conntrack --ctstate NEW -j ACCEPT
+
+# Allow established traffic to pass back and forth
+iptables -I FORWARD -m conntrack --ctstate RELATED,ESTABLISHED \
+         -j ACCEPT
+
+# save rule
 iptables-save > /etc/sysconfig/iptables
 
 # enable IP forwarding in sysctl
