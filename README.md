@@ -255,7 +255,7 @@ source ./vars
 
 # copy generated keys into key folder
 cd /etc/openvpn/easy-rsa/keys
-cp keys/dh2048.pem keys/ca.crt keys/server.crt keys/server.key /etc/openvpn/keys/
+cp dh2048.pem ca.crt server.crt server.key /etc/openvpn/keys/
 
 
 ```
